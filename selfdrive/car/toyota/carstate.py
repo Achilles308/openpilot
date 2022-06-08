@@ -35,6 +35,7 @@ class CarState(CarStateBase):
 
     ret.brakePressed = cp.vl["BRAKE_MODULE"]["BRAKE_PRESSED"] != 0
     ret.brakeHoldActive = cp.vl["ESP_CONTROL"]["BRAKE_HOLD_ACTIVE"] == 1
+    ret.brakeLightsDEPRECATED = bool(cp.vl["PCM_CRUISE"]["STANDSTILL_ON"] or ret.brakePressed or ret.brakeHoldActive)
     if self.CP.enableGasInterceptor:
       ret.gas = (cp.vl["GAS_SENSOR"]["INTERCEPTOR_GAS"] + cp.vl["GAS_SENSOR"]["INTERCEPTOR_GAS2"]) // 2
       ret.gasPressed = ret.gas > 805
@@ -154,6 +155,7 @@ class CarState(CarStateBase):
       ("CRUISE_ACTIVE", "PCM_CRUISE"),
       ("CRUISE_STATE", "PCM_CRUISE"),
       ("GAS_RELEASED", "PCM_CRUISE"),
+      ("STANDSTILL_ON", "PCM_CRUISE"),
       ("STEER_TORQUE_DRIVER", "STEER_TORQUE_SENSOR"),
       ("STEER_TORQUE_EPS", "STEER_TORQUE_SENSOR"),
       ("STEER_ANGLE", "STEER_TORQUE_SENSOR"),
