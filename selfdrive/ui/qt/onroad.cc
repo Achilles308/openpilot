@@ -224,10 +224,17 @@ void NvgWindow::drawHud(QPainter &p) {
   }
 
   // current speed
+  if (is_brakelight_on) {
   configFont(p, "Open Sans", 176, "Bold");
-  drawColorText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(255, 255, 255, 255));
+  drawColorText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(210, 0, 0, 255));
   configFont(p, "Open Sans", 66, "Regular");
-  drawColorText(p, rect().center().x(), 290, speedUnit, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(255, 255, 255, 255));
+  drawColorText(p, rect().center().x(), 290, speedUnit, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(210, 0, 0, 255));
+  } else {
+  configFont(p, "Open Sans", 176, "Bold");
+  drawColorText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(255, 255, 255, 255) : QColor(255, 255, 255, 255));
+  configFont(p, "Open Sans", 66, "Regular");
+  drawColorText(p, rect().center().x(), 290, speedUnit, is_brakelight_on ? QColor(255, 255, 255, 255) : QColor(255, 255, 255, 255));
+  }
 
   // engage-ability icon
   if (engageable) {
