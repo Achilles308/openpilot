@@ -31,6 +31,7 @@ class NvgWindow : public CameraViewWidget {
   Q_PROPERTY(QString speedUnit MEMBER speedUnit);
   Q_PROPERTY(QString maxSpeed MEMBER maxSpeed);
   Q_PROPERTY(bool is_cruise_set MEMBER is_cruise_set);
+  Q_PROPERTY(bool is_brakelight_on MEMBER is_brakelight_on);
   Q_PROPERTY(bool engageable MEMBER engageable);
   Q_PROPERTY(bool dmActive MEMBER dmActive);
   Q_PROPERTY(bool hideDM MEMBER hideDM);
@@ -43,6 +44,7 @@ public:
 private:
   void drawIcon(QPainter &p, int x, int y, QPixmap &img, QBrush bg, float opacity);
   void drawText(QPainter &p, int x, int y, const QString &text, int alpha = 255);
+  void drawColorText(QPainter &p, int x, int y, const QString &text, QColor color);
 
   QPixmap engage_img;
   QPixmap dm_img;
@@ -52,6 +54,7 @@ private:
   QString speedUnit;
   QString maxSpeed;
   bool is_cruise_set = false;
+  bool is_brakelight_on = false;
   bool engageable = false;
   bool dmActive = false;
   bool hideDM = false;
