@@ -184,6 +184,7 @@ void NvgWindow::updateState(const UIState &s) {
 
   setProperty("is_cruise_set", cruise_set);
   setProperty("speed", QString::number(std::nearbyint(cur_speed)));
+  setProperty("is_brakelight_on", sm["carState"].getCarState().getBrakeLightsDEPRECATED());
   setProperty("maxSpeed", maxspeed_str);
   setProperty("speedUnit", s.scene.is_metric ? "km/h" : "mph");
   setProperty("hideDM", cs.getAlertSize() != cereal::ControlsState::AlertSize::NONE);
@@ -224,9 +225,9 @@ void NvgWindow::drawHud(QPainter &p) {
 
   // current speed
   configFont(p, "Open Sans", 176, "Bold");
-  drawText(p, rect().center().x(), 210, speed);
+  drawColorText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(255, 255, 255, 255));
   configFont(p, "Open Sans", 66, "Regular");
-  drawText(p, rect().center().x(), 290, speedUnit, 200);
+  drawColorText(p, rect().center().x(), 290, speedUnit, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(255, 255, 255, 255));
 
   // engage-ability icon
   if (engageable) {
@@ -252,6 +253,16 @@ void NvgWindow::drawText(QPainter &p, int x, int y, const QString &text, int alp
   p.drawText(real_rect.x(), real_rect.bottom(), text);
 }
 
+void NvgWindow::drawColorText(QPainter &p, int x, int y, const QString &text, QColor color) {
+  QFontMetrics fm(p.font());
+  QRect init_rect = fm.boundingRect(text);
+  QRect real_rect = fm.boundingRect(init_rect, 0, text);
+  real_rect.moveCenter({x, y - real_rect.height() / 2});
+
+  p.setPen(color);
+  p.drawText(real_rect.x(), real_rect.bottom(), text);
+}
+
 void NvgWindow::drawIcon(QPainter &p, int x, int y, QPixmap &img, QBrush bg, float opacity) {
   p.setPen(Qt::NoPen);
   p.setBrush(bg);
@@ -259,7 +270,6 @@ void NvgWindow::drawIcon(QPainter &p, int x, int y, QPixmap &img, QBrush bg, flo
   p.setOpacity(opacity);
   p.drawPixmap(x - img_size / 2, y - img_size / 2, img);
 }
-
 
 void NvgWindow::initializeGL() {
   CameraViewWidget::initializeGL();
