@@ -225,15 +225,15 @@ void NvgWindow::drawHud(QPainter &p) {
 
   // current speed
   if (is_brakelight_on) {
-  configFont(p, "Open Sans", 176, "Bold");
-  drawColorText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(210, 0, 0, 255));
-  configFont(p, "Open Sans", 66, "Regular");
-  drawColorText(p, rect().center().x(), 290, speedUnit, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(210, 0, 0, 255));
+    configFont(p, "Open Sans", 176, "Bold");
+    drawColorText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(210, 0, 0, 255));
+    configFont(p, "Open Sans", 66, "Regular");
+    drawColorText(p, rect().center().x(), 290, speedUnit, is_brakelight_on ? QColor(210, 0, 0, 255) : QColor(210, 0, 0, 255));
   } else {
-  configFont(p, "Open Sans", 176, "Bold");
-  drawColorText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(255, 255, 255, 255) : QColor(255, 255, 255, 255));
-  configFont(p, "Open Sans", 66, "Regular");
-  drawColorText(p, rect().center().x(), 290, speedUnit, is_brakelight_on ? QColor(255, 255, 255, 255) : QColor(255, 255, 255, 255));
+    configFont(p, "Open Sans", 176, "Bold");
+    drawColorText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(255, 255, 255, 255) : QColor(255, 255, 255, 255));
+    configFont(p, "Open Sans", 66, "Regular");
+    drawColorText(p, rect().center().x(), 290, speedUnit, is_brakelight_on ? QColor(255, 255, 255, 255) : QColor(255, 255, 255, 255));
   }
 
   // engage-ability icon
@@ -259,6 +259,15 @@ void NvgWindow::drawText(QPainter &p, int x, int y, const QString &text, int alp
   p.setPen(QColor(0xff, 0xff, 0xff, alpha));
   p.drawText(real_rect.x(), real_rect.bottom(), text);
 }
+
+void NvgWindow::drawText(QPainter &p, int x, int y, const QString &text, int alpha) {
+  QFontMetrics fm(p.font());
+  QRect init_rect = fm.boundingRect(text);
+  QRect real_rect = fm.boundingRect(init_rect, 0, text);
+  real_rect.moveCenter({x, y - real_rect.height() / 2});
+
+  p.setPen(QColor(0xff, 0xff, 0xff, alpha));
+  p.drawText(real_rect.x(), real_rect.bottom(), text);
 
 void NvgWindow::drawColorText(QPainter &p, int x, int y, const QString &text, QColor color) {
   QFontMetrics fm(p.font());
